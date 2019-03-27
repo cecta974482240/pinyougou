@@ -1,7 +1,5 @@
 package com.pinyougou.pojo;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -56,18 +54,6 @@ public class User implements Serializable{
     private Date birthday;
 	@Column(name="last_login_time")
     private Date lastLoginTime;
-    @Column(name="address")
-    private String address;
-    @Column(name="profession")
-    private String profession;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Long getId() {
         return id;

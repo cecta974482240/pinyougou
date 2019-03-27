@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.common.util.HttpClientUtils;
 import com.pinyougou.mapper.UserMapper;
+import com.pinyougou.pojo.Order;
 import com.pinyougou.pojo.User;
 import com.pinyougou.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -56,13 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        try {
-            Long id = userMapper.findId(user.getUsername());
-            user.setId(id);
-            userMapper.updateByPrimaryKeySelective(user);
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
+
     }
 
     @Override
@@ -135,10 +130,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /** 根据用户名查询用户信息 */
-    @Override
-    public User findUserId(String userName) {
-        return userMapper.findUserId(userName);
-    }
+
 
 }

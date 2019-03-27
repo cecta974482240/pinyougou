@@ -2,6 +2,7 @@ package com.pinyougou.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -27,6 +28,9 @@ public class PayLog implements Serializable{
     private String orderList;
 	@Column(name="pay_type")
     private String payType;
+
+
+
 
     public String getOutTradeNo() {
         return outTradeNo;
