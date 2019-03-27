@@ -83,7 +83,7 @@ public class WeixinPayServiceImpl implements WeixinPayService {
 
             // {outTradeNo : '', money : 100, codeUrl : ''}
             Map<String,Object> data = new HashMap<>();
-            data.put("outTradeNo", outTradeNo);
+            data.put("outTradeNo", outTradeNo.replaceAll("_","" ));
             data.put("totalFee", totalFee);
             // 二维码链接	code_url
             data.put("codeUrl", map.get("code_url"));

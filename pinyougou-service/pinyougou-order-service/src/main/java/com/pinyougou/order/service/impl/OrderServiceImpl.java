@@ -1,6 +1,9 @@
 package com.pinyougou.order.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.pinyougou.cart.Cart;
 import com.pinyougou.common.util.IdWorker;
 import com.pinyougou.mapper.OrderItemMapper;
@@ -13,9 +16,11 @@ import com.pinyougou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -172,10 +177,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByPage(Order order, int page, int rows) {
-        return null;
+    public PageInfo<Order> findByPage(String userId, Integer page, Integer rows) {
+        try{
+            // 开始分页
+            PageInfo<Order> pageInfo = PageHelper.startPage(page, rows)
+                    .doSelectPageInfo(new ISelect() {
+                        @Override
+                        public void doSelect() {
+                            findOrder(userId);
+                        }
+                    });
+            return pageInfo;
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
-
     /** 根据登录用户名，从Redis数据库获取支付日志对象 */
     public PayLog findPayLogFromRedis(String userId){
         try{
@@ -219,4 +235,102 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException(ex);
         }
     }
+
+
+  @Override
+    public void updateStatusByUser(String outTradeNo, String transactionId,String orderId){
+        try{
+            Order order = new Order();
+            Long orderid = Long.valueOf(orderId);
+            Example example = new Example(Order.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("orderId",orderid );
+            order.setStatus("2");
+            orderMapper.updateByExampleSelective(order,example );
+            PayLog payLog = payLogMapper.selectByPrimaryKey(outTradeNo);
+            String orderList = payLog.getOrderList();
+            String[] split = orderList.split(",");
+            if(split.length == 1){
+                // 支付时间
+                payLog.setPayTime(new Date());
+                // 交易状态
+                payLog.setTradeState("1");
+                // 微信支付订单号
+                payLog.setTransactionId(transactionId);
+                // 修改
+                payLogMapper.updateByPrimaryKeySelective(payLog);
+            }else {
+                // 支付时间
+                PayLog payLog1 = new PayLog();
+                payLog1.setPayTime(new Date());
+                // 交易状态
+                payLog1.setTradeState("1");
+                // 微信支付订单号
+                payLog1.setTransactionId(transactionId);
+                payLog1.setCreateTime(new Date());
+                payLog1.setUserId(payLog.getUserId());
+                payLog1.setOutTradeNo(idWorker.nextId()+"");
+
+               Example example1 = new Example(Order.class);
+                Example.Criteria criteria1 = example1.createCriteria();
+                criteria1.andEqualTo("orderId",orderid );
+                List<Order> order1 = orderMapper.selectByExample(example1);
+                payLog1.setTotalFee(order1.get(0).getPayment().longValue());
+                payLog1.setTransactionId(transactionId);
+                payLog1.setPayType("1");
+                payLog1.setOrderList(orderId);
+                payLogMapper.insertSelective(payLog1);
+                ArrayList<String> list = new ArrayList<>();
+                for (String s : split) {
+                    if(!s.equals(orderId)){
+                        list.add(s);
+                    }
+                }
+                String ids = list.toString().replace("[", "").replaceAll("]", "");
+                payLog.setOrderList(ids);
+                payLogMapper.updateByPrimaryKeySelective(payLog);
+                // 3. 删除支付日志
+                redisTemplate.delete("payLog_" + payLog.getUserId());
+            }
+
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Order> getOrder(String orderId) {
+        Example example = new Example(Order.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderId", orderId);
+        return orderMapper.selectByExample(example);
+
+
+    }
+
+
+    @Override
+    public List<Order> findOrder(String userId) {
+        try{
+            Example example = new Example(Order.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("userId",userId );
+            example.orderBy("status").asc();
+            List<Order> orderList = orderMapper.selectByExample(example);
+            for (Order order : orderList) {
+                order.setLongid(order.getLongId());
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderId(order.getOrderId());
+                List<OrderItem> orderItems = orderItemMapper.select(orderItem);
+                order.setOrderItems(orderItems);
+            }
+            return orderList;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

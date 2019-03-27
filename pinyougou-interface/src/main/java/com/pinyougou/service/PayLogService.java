@@ -31,4 +31,5 @@ public interface PayLogService {
 	/** 多条件分页查询 */
 	List<PayLog> findByPage(PayLog payLog, int page, int rows);
 
+    PayLog getpayLog(String userId,String orderId);
 }

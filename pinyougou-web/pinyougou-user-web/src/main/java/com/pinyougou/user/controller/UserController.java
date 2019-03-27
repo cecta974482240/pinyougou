@@ -1,11 +1,10 @@
 package com.pinyougou.user.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.Areas;
-import com.pinyougou.pojo.Cities;
-import com.pinyougou.pojo.Provinces;
-import com.pinyougou.pojo.User;
+import com.github.pagehelper.PageInfo;
+import com.pinyougou.pojo.*;
 import com.pinyougou.service.AddressService;
+import com.pinyougou.service.OrderService;
 import com.pinyougou.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +26,9 @@ public class UserController {
     private UserService userService;
     @Reference(timeout = 10000)
     private AddressService addressService;
+
+    @Reference(timeout = 10000)
+    private OrderService orderService;
 
     /** 用户注册 */
     @PostMapping("/save")
@@ -170,4 +172,14 @@ public class UserController {
         return false;
 
     }
+
+
+    @GetMapping ("/findByPage")
+    public PageInfo<Order> findByPage(HttpServletRequest request , Integer page , Integer rows){
+        String userId = request.getRemoteUser();
+        return  orderService.findByPage(userId ,page ,rows);
+
+    }
+
+
 }
