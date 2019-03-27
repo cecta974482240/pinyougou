@@ -56,7 +56,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-
+        try {
+            Long id = userMapper.findId(user.getUsername());
+            user.setId(id);
+            userMapper.updateByPrimaryKeySelective(user);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -127,6 +133,12 @@ public class UserServiceImpl implements UserService {
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    /** 根据用户名查询用户信息 */
+    @Override
+    public User findUserId(String userName) {
+        return userMapper.findUserId(userName);
     }
 
 }

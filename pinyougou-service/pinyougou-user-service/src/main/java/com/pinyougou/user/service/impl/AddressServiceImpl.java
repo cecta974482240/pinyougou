@@ -3,6 +3,9 @@ package com.pinyougou.user.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.AddressMapper;
 import com.pinyougou.pojo.Address;
+import com.pinyougou.pojo.Areas;
+import com.pinyougou.pojo.Cities;
+import com.pinyougou.pojo.Provinces;
 import com.pinyougou.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +80,44 @@ public class AddressServiceImpl implements AddressService {
             return addressMapper.selectByExample(example);
         }catch (Exception ex){
             throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 查询所有省份
+     */
+    @Override
+    public List<Provinces> findProvinceid() {
+        try{
+            return addressMapper.findProvinceid();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 监控 user.address.provinceId 变量,查询城市
+     */
+    @Override
+    public List<Cities> findCityById(Long provinceId) {
+        try{
+            return addressMapper.findCityById(provinceId);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 查询城区信息
+     *
+     * @param ciytId
+     */
+    @Override
+    public List<Areas> findAreaById(Long ciytId) {
+        try{
+            return addressMapper.findAreaById(ciytId);
+        }catch (Exception e){
+            throw new RuntimeException(e);
         }
     }
 }

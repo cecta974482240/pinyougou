@@ -40,6 +40,16 @@ public class SellerController {
         return sellerService.findByPage(seller, page, rows);
     }
 
+    /** 根据用户Id查询商家信息 */
+    @GetMapping("/findById")
+    public Seller findById(String id){
+        try {
+            return sellerService.findOne(id);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     /** 审核商家 */
     @GetMapping("/updateStatus")
     public boolean updateStatus(String sellerId, String status){
