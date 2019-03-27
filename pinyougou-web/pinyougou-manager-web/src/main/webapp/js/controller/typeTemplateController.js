@@ -8,6 +8,7 @@ app.controller('typeTemplateController', function($scope, $controller, baseServi
     $scope.searchEntity = {};
     /** 分页查询(查询条件) */
     $scope.search = function(page, rows){
+        /** 调用服务分页查询类型模版数据 */
         baseService.findByPage("/typeTemplate/findByPage", page,
 			rows, $scope.searchEntity)
             .then(function(response){
@@ -38,17 +39,16 @@ app.controller('typeTemplateController', function($scope, $controller, baseServi
 
     /** 显示修改 */
     $scope.show = function(entity){
-        /** 把json对象转化成一个新的json对象 */
-        $scope.entity = JSON.parse(JSON.stringify(entity));
+       /** 把json对象转化成一个新的json对象 */
+       $scope.entity = JSON.parse(JSON.stringify(entity));
 
-        // 把品牌json数组字符串 转化成 json数组
-        $scope.entity.brandIds = JSON.parse($scope.entity.brandIds);
-        // 把规格 json数组字符串 转化成 json数组
-        $scope.entity.specIds = JSON.parse($scope.entity.specIds);
+       //把品牌json数组字符串转换成json数组
+        $scope.entity.brandIds = JSON.parse($scope.entity.brandIds)
+        //把规格json数组字符转转换为json数组
+        $scope.entity.specIds = JSON.parse($scope.entity.specIds)
 
-        // 把扩展属性 json数组字符串 转化成 json数组
+       //把扩展属性json数组字符串转换为json数组
         $scope.entity.customAttributeItems = JSON.parse($scope.entity.customAttributeItems);
-
     };
 
     /** 批量删除 */
@@ -68,39 +68,33 @@ app.controller('typeTemplateController', function($scope, $controller, baseServi
         }
     };
 
-    // config: 指定数据源 {data : [{id : 1, text : ''},{id : 1, text : ''}]}
-    // 查询品牌下拉列表
+    /** 品牌列表 */
+    $scope.brandList = {data:[{id:1,text:'联想'},{id:2,test:'华为'},{id:3,text:'小米'},{id:4,text:'锤子'}]};
+
+    /** 后台品牌列表 */
     $scope.findBrandList = function () {
-        // 发送异步请求
-        baseService.sendGet("/brand/findBrandList").then(function(response){
-            // 获取响应数据
-            // response.data: [{id : 1, text : '华为'},{id : 2, text : '小米'}]
-            // 定义初始化select2组件需要的数据
-            $scope.brandList = {data : response.data};
-        });
-    };
+        baseService.sendGet("/brand/findBrandList").then(function (response) {
+            $scope.brandList = {data:response.data};
+        })
+    }
 
-    // 查询规格下拉列表
+    /** 后台规格列表 */
+    $scope.specList = {data:[{id:1,text:'网路'},{id:2,test:'尺码'}]};
+
+    /** 后台规格列表 */
     $scope.findSpecList = function () {
-        // 发送异步请求
-        baseService.sendGet("/specification/findSpecList").then(function(response){
-            // 获取响应数据
-            // response.data: [{id : 1, text : ''},{id : 2, text : ''}]
-            // 定义初始化select2组件需要的数据
-            $scope.specList = {data : response.data};
-        });
-    };
+        baseService.sendGet("/specification/findSpecList").then(function (response) {
+            $scope.specList = {data:response.data};
+        })
+    }
 
-    // 新增一行
-    $scope.addTableRow = function () {
+    /** 新增扩展属性行 */
+    $scope.addTableRow = function(){
         $scope.entity.customAttributeItems.push({});
     };
 
-    // 删除一行
-    $scope.deleteTableRow = function (idx) {
-        $scope.entity.customAttributeItems.splice(idx, 1);
-    };
-
-
-
+    /** 删除扩展属性行 */
+    $scope.deleteTableRow = function (index) {
+        $scope.entity.customAttributeItems.splice(index,1);
+    }
 });

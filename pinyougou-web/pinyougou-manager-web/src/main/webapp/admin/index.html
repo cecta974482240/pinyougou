@@ -17,7 +17,8 @@
     <script src="/js/base.js"></script>
     <script src="/js/service/baseService.js"></script>
     <script src="/js/controller/indexController.js"></script>
-    
+
+
     <script type="text/javascript">   
 		 function setIFrameHeight(){
 			 $("#iframe").height($(".content-wrapper").height() - 5);
@@ -26,10 +27,7 @@
  
 </head>
 
-<body ng-app="pinyougou"
-      ng-controller="indexController"
-      ng-init="showLoginName();"
-      class="hold-transition skin-green sidebar-mini" >
+<body class="hold-transition skin-green sidebar-mini"  ng-app="pinyougou" ng-controller="indexController" ng-init="showLoginName()">
 
     <div class="wrapper">
 
@@ -260,7 +258,7 @@
                                     <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                       {{loginName}}
+                                        {{loginName}}
                                         <small>最后登录 11:20AM</small>
                                     </p>
                                 </li>
@@ -318,12 +316,12 @@
 				        <ul class="treeview-menu">
 				
 				            <li>
-				                <a href="/admin/seller_check.html" target="iframe">
+				                <a href="seller_check.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商家审核
 				                </a>
 				            </li>
 							<li>
-				                <a href="/admin/seller.html" target="iframe">
+				                <a href="seller.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商家管理
 				                </a>
 				            </li>
@@ -340,27 +338,27 @@
 				        <ul class="treeview-menu">
 				
 				            <li>
-				                <a href="/admin/brand.html" target="iframe">
+				                <a href="brand.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>品牌管理
 				                </a>
 				            </li>
 							<li>
-				                <a href="/admin/specification.html" target="iframe">
+				                <a href="specification.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>规格管理
 				                </a>
 				            </li>							
 							<li>
-				                <a href="/admin/type_template.html" target="iframe">
+				                <a href="type_template.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>模板管理
 				                </a>
 				            </li>
 							<li>
-				                <a href="/admin/item_cat.html" target="iframe">
+				                <a href="item_cat.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>分类管理
 				                </a>
 				            </li>
 							<li>
-				                <a href="/admin/goods.html" target="iframe">
+				                <a href="goods.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商品审核
 				                </a>
 				            </li>
@@ -378,12 +376,12 @@
 				        <ul class="treeview-menu">
 				
 				            <li>
-				                <a href="/admin/content_category.html" target="iframe">
+				                <a href="content_category.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告类型管理
 				                </a>
 				            </li>
 							<li>
-				                <a href="/admin/content.html" target="iframe">
+				                <a href="content.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告管理
 				                </a>
 				            </li>
@@ -400,7 +398,7 @@
         <!-- 内容区域 -->
         <div class="content-wrapper">
 			<iframe width="100%" id="iframe" name="iframe" onload="setIFrameHeight()" 
-					frameborder="0" src="/admin/home.html"></iframe>
+					frameborder="0" src="home.html"></iframe>
  
         </div>
         <!-- 内容区域 /-->

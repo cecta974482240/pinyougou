@@ -59,15 +59,14 @@ app.controller('specificationController', function($scope, $controller, baseServ
         }
     };
 
-
-    // 增加一行
-    $scope.addTableRow = function(){
-        // entity = {specName : '', specificationOptions: [{optioName:'', orders: ''},{}] }
+    /** 新增规格选项行 */
+   // $scope.entity.specificaltionOptions.push({});
+    $scope.addTableRow = function () {
         $scope.entity.specificationOptions.push({});
-    };
+    }
 
-    // 删除一行
-    $scope.deleteTableRow = function(idx){
-        $scope.entity.specificationOptions.splice(idx,1);
-    };
+    /** 删除规格选项行 */
+    $scope.deleteTableRow = function (ids) {
+        $scope.entity.specificationOptions.splice(ids,1);
+    }
 });

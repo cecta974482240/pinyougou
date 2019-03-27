@@ -9,7 +9,7 @@ app.controller('contentController', function($scope, $controller, baseService){
     /** 分页查询(查询条件) */
     $scope.search = function(page, rows){
         baseService.findByPage("/content/findByPage", page,
-			rows, $scope.searchEntity)
+            rows, $scope.searchEntity)
             .then(function(response){
                 /** 获取分页查询结果 */
                 $scope.dataList = response.data.rows;
@@ -25,7 +25,7 @@ app.controller('contentController', function($scope, $controller, baseService){
             url = "update";
         }
         /** 发送post请求 */
-        baseService.sendPost("/content/" + url, $scope.entity)
+        baseService.sendPost("/contentCategory/" + url, $scope.entity)
             .then(function(response){
                 if (response.data){
                     /** 重新加载数据 */
@@ -38,14 +38,14 @@ app.controller('contentController', function($scope, $controller, baseService){
 
     /** 显示修改 */
     $scope.show = function(entity){
-       /** 把json对象转化成一个新的json对象 */
-       $scope.entity = JSON.parse(JSON.stringify(entity));
+        /** 把json对象转化成一个新的json对象 */
+        $scope.entity = JSON.parse(JSON.stringify(entity));
     };
 
     /** 批量删除 */
     $scope.delete = function(){
         if ($scope.ids.length > 0){
-            baseService.deleteById("/content/delete", $scope.ids)
+            baseService.deleteById("/contentCategory/delete", $scope.ids)
                 .then(function(response){
                     if (response.data){
                         /** 重新加载数据 */
@@ -59,27 +59,23 @@ app.controller('contentController', function($scope, $controller, baseService){
         }
     };
 
-
-    // 查询广告类型
+    /** 查询所有广告类型 */
     $scope.findContentCategory = function () {
-        baseService.sendGet("/contentCategory/findAll").then(function(response){
-            // 获取响应数据 [{},{}]
+        baseService.sendGet("/contentCategory/findAll").then(function (response) {
             $scope.contentCategoryList = response.data;
         });
-    };
+    }
 
-    // 图片上传
-    $scope.upload = function () {
+    /** 定义上传文件方法 */
+    $scope.uploadFile = function () {
         baseService.uploadFile().then(function (response) {
-            // 获取响应数据: {status : 200|500, url : ''}
+            /** 如果上传成功,取出url */
             if (response.data.status == 200){
+                /** 设置图片访问地址 */
                 $scope.entity.pic = response.data.url;
+            }else {
+                alert("上传失败!")
             }
-        });
-    };
-
-    // 解决ng-checked与ng-model的冲突
-    $scope.selectStatus = function (event) {
-        $scope.entity.status = event.target.checked ? 1 : 0;
-    };
+        })
+    }
 });

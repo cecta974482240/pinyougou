@@ -9,7 +9,7 @@ app.controller('contentCategoryController', function($scope, $controller, baseSe
     /** 分页查询(查询条件) */
     $scope.search = function(page, rows){
         baseService.findByPage("/contentCategory/findByPage", page,
-			rows, $scope.searchEntity)
+            rows, $scope.searchEntity)
             .then(function(response){
                 /** 获取分页查询结果 */
                 $scope.dataList = response.data.rows;
@@ -38,8 +38,8 @@ app.controller('contentCategoryController', function($scope, $controller, baseSe
 
     /** 显示修改 */
     $scope.show = function(entity){
-       /** 把json对象转化成一个新的json对象 */
-       $scope.entity = JSON.parse(JSON.stringify(entity));
+        /** 把json对象转化成一个新的json对象 */
+        $scope.entity = JSON.parse(JSON.stringify(entity));
     };
 
     /** 批量删除 */

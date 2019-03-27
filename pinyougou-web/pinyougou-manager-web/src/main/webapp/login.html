@@ -6,6 +6,7 @@
 		<link rel="icon" href="/assets/img/favicon.ico"/>
 	    <link rel="stylesheet" type="text/css" href="/css/webbase.css"/>
 	    <link rel="stylesheet" type="text/css" href="/css/pages-login-manage.css"/>
+
 	</head>
   <body>
 	<div class="loginmanage">
@@ -30,20 +31,16 @@
 						<img src="../img/wx_cz.jpg" />
 					</div>
 					<div id="profile" class="tab-pane  active">
-						<form action="/login" class="sui-form" method="post">
+						<form class="sui-form" id="loginForm" action="/login" method="post">
 							<div class="input-prepend">
 								<span class="add-on loginname"></span>
-								<input  type="text"
-										name="username"
-										placeholder="邮箱/用户名/手机号"
-										class="span2 input-xfat"/>
+								<input name="username" id="prependedInput" type="text"
+								placeholder="邮箱/用户名/手机号" class="span2 input-xfat"/>
 							</div>
 							<div class="input-prepend">
 								<span class="add-on loginpwd"></span>
-								<input  type="password"
-										name="password"
-										placeholder="请输入密码"
-										class="span2 input-xfat"/>
+								<input name="password" id="prependedInput" type="password"
+								placeholder="请输入密码" class="span2 input-xfat"/>
 							</div>
 							<div class="setting">
 								 <div id="slider">
@@ -53,9 +50,8 @@
 								</div>
 							</div>
 							<div class="logined">
-								<input type="submit"
-									   value="登&nbsp;&nbsp;录"
-									   class="sui-btn btn-block btn-xlarge btn-danger"/>
+								<a class="sui-btn btn-block btn-xlarge btn-danger"
+									onclick="loginForm.submit();">登&nbsp;&nbsp;录</a>
 							</div>
 						</form>
 					</div>
@@ -90,7 +86,7 @@
 	
 	<script src="/js/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
 	<script src="/js/pages/jquery.slideunlock.js"></script>
-	
+
 	<script>
 		$(function(){
 			var slider = new SliderUnlock("#slider",{

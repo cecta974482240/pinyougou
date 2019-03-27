@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
@@ -7,73 +7,47 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <!-- ############ 配置http请求URL拦截规则 ########### -->
-    <!-- 配置http请求URL不需要拦截 -->
+<!--########## 配置请求URL拦截规则 ##########-->
+    <!-- 配置哪些请求URL不需要拦截 -->
+    <security:http pattern="/login.html" security="none"/>
     <security:http pattern="/css/**" security="none"/>
     <security:http pattern="/img/**" security="none"/>
     <security:http pattern="/js/**" security="none"/>
     <security:http pattern="/plugins/**" security="none"/>
-    <security:http pattern="/login.html" security="none"/>
-    <security:http pattern="/itemCat/findItemCatByParentId" security="none"/>
 
-
-    <!-- 配置需要拦截的http请求URL -->
+    <!-- 配置哪些请求URL需要拦截 -->
     <security:http>
-        <!-- 需要拦截的请求URL，用什么角色访问 ROLE_* -->
+        <!-- 配置剩余的请求地址都需要ROLE_ADMIN角色才可以访问 -->
         <security:intercept-url pattern="/**" access="hasRole('ADMIN')"/>
-
-        <!-- 配置表单登录
-            login-page: 登录页面
-            login-processing-url: 登录处理的请求地址
-            username-parameter: 用户名请求参数名
-            password-parameter: 密码请求参数名
-
-            authentication-success-forward-url: 登录成功需要请求转发到哪个URL
-
-            登录成功需要重定向到哪个URL:
-            default-target-url="/admin/index.html"
-            always-use-default-target="true"
-
-            authentication-failure-forward-url: 登录失败需要请求转发到哪个URL
-            authentication-failure-url: 登录失败需要重定向到哪个URL
-        -->
-        <security:form-login login-page="/login.html"
-                             login-processing-url="/login"
-                             username-parameter="username"
-                             password-parameter="password"
-
-                             default-target-url="/admin/index.html"
-                             always-use-default-target="true"
-
-                             authentication-failure-url="/login.html"/>
-        <!-- 关闭跨站点请求伪造CSRF -->
+        <!-- 配置开启表单登录 -->
+        <security:form-login
+                login-page="/login.html"
+                username-parameter="username"
+                password-parameter="password"
+                default-target-url="/admin/index.html"
+                always-use-default-target="true"
+                authentication-failure-url="/login.html"/>
+        <!-- 配置跨站请求伪造不可用-->
         <security:csrf disabled="true"/>
-
-        <!-- 配置允许有ifame子窗口 -->
+        <!-- 配置头信息，指定框架页策略(iframe子窗口也可以访问)-->
         <security:headers>
-            <!-- 配置iframe 在相同的域名下是可以访问的: SAMEORIGIN same origin -->
             <security:frame-options policy="SAMEORIGIN"/>
         </security:headers>
-
-
-        <!-- 配置退出 -->
+        <!--配置退出登录-->
         <security:logout logout-url="/logout" invalidate-session="true"/>
-
     </security:http>
 
-
-    <!-- ############ 配置身份认证管理器 ########### -->
+    <!-- 配置认证管理器 -->
     <security:authentication-manager>
         <!-- 配置认证提供者 -->
         <security:authentication-provider>
-            <!-- 配置用户服务，作为认证提供者 -->
+            <!-- 配置用户认证服务(通过用户名密码方式) -->
             <security:user-service>
-                <!-- 配置用户 用户名、密码、角色 -->
-                <security:user name="admin" password="123456" authorities="ROLE_ADMIN"/>
-                <!-- 配置用户 用户名、密码、角色 -->
-                <security:user name="test" password="123456" authorities="ROLE_ADMIN"/>
+                <!-- 配置用户认证信息：用户名、密码、角色-->
+                <security:user name="admin"
+                               password="123456"
+                               authorities="ROLE_ADMIN"/>
             </security:user-service>
         </security:authentication-provider>
     </security:authentication-manager>
-
 </beans>
