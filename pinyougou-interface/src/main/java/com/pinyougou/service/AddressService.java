@@ -1,6 +1,10 @@
 package com.pinyougou.service;
 
 import com.pinyougou.pojo.Address;
+import com.pinyougou.pojo.Areas;
+import com.pinyougou.pojo.Cities;
+import com.pinyougou.pojo.Provinces;
+
 import java.util.List;
 import java.io.Serializable;
 /**
@@ -33,4 +37,13 @@ public interface AddressService {
 
 	/** 根据用户名查询收件地址 */
     List<Address> findAddressByUser(String userId);
+
+	/** 查询所有省份 */
+	List<Provinces> findProvinceid();
+
+    /** 查询城市 */
+    List<Cities> findCityById(Long provinceId);
+
+    /** 查询城区信息 */
+    List<Areas> findAreaById(Long ciytId);
 }

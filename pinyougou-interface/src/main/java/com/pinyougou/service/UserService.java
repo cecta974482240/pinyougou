@@ -1,6 +1,5 @@
 package com.pinyougou.service;
 
-import com.pinyougou.pojo.Order;
 import com.pinyougou.pojo.User;
 import java.util.List;
 import java.io.Serializable;
@@ -38,6 +37,6 @@ public interface UserService {
 	/** 检验短信验证码 */
 	boolean checkSmsCode(String phone, String code);
 
-
-
+	/** 根据用户名查询用户信息 */
+	User findUserId(String userId);
 }

@@ -76,7 +76,4 @@ app.controller('userController', function($scope, $timeout, baseService){
     };
 
 
-
-
-
 });
