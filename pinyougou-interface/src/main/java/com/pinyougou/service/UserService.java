@@ -39,4 +39,15 @@ public interface UserService {
 
 	/** 根据用户名查询用户信息 */
 	User findUserId(String userId);
+
+
+	/** 昵称,密码设置 */
+	void savePasswordOrNickname(User user,String username);
+
+	/** 查询当前登录的用户信息 */
+	User findUser(String userId);
+
+ 	/** 修改绑定后的手机号码 */
+	void updatePhone(String phone,String userId);
+
 }
