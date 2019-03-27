@@ -120,19 +120,23 @@ public class CartController {
             carts = JSON.parseArray(cartJsonStr, Cart.class);
         }
         return carts;
-
     }
 
-    /** 获取用户提交的购物车 */
-    @GetMapping("/findCommitCart")
-    public List<Cart> findCommitCart(Long[] ids){
-        // 获取登录用户名
-        String userId = request.getRemoteUser();
+    /** 保存用户提交的购物车 */
+    @GetMapping("/saveCommitCart")
+    public boolean saveCommitCart(Long[] ids) {
+        try {
+            // 获取登录用户名
+            String userId = request.getRemoteUser();
 
-        // 购物集合
-        List<Cart> carts = null;
+            // 保存用户提交的购物车
+            cartService.saveCommitCartRedis(userId, ids);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-        return carts;
-
+        return false;
     }
+
 }

@@ -1,4 +1,5 @@
 package com.pinyougou.cart.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.cart.Cart;
 import com.pinyougou.mapper.ItemMapper;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  购物车服务接口实现类
+ * 购物车服务接口实现类
  *
  * @author lee.siu.wah
  * @version 1.0
@@ -31,13 +32,14 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 添加SKU商品添加到购物车
-     * @param carts 购物车集合
+     *
+     * @param carts  购物车集合
      * @param itemId SKU的id
-     * @param num 购买数量
+     * @param num    购买数量
      * @return 修改后的购物车集合
      */
-    public List<Cart> addItemToCart(List<Cart> carts, Long itemId, Integer num){
-        try{
+    public List<Cart> addItemToCart(List<Cart> carts, Long itemId, Integer num) {
+        try {
             // 1. 根据itemId到tb_item表查询一行数据
             Item item = itemMapper.selectByPrimaryKey(itemId);
 
@@ -45,7 +47,7 @@ public class CartServiceImpl implements CartService {
             Cart cart = searchCartBySellerId(carts, item.getSellerId());
 
             // 3. 判断商家的购物车是否为空
-            if (cart == null){
+            if (cart == null) {
                 // 代表没有买过该商家的商品
                 // 创建商家的购物车
                 cart = new Cart();
@@ -58,14 +60,14 @@ public class CartServiceImpl implements CartService {
                 List<OrderItem> orderItems = new ArrayList<>();
                 // 创建购物车中的商品对象
                 OrderItem orderItem = createOrderItem(item, num);
-                
+
                 // 添加用户购买的商品
                 orderItems.add(orderItem);
                 // 设置商家的购物车集合
                 cart.setOrderItems(orderItems);
                 // 添加到用户的购物车集合中
                 carts.add(cart);
-            }else{
+            } else {
                 // 代表买过该商家的商品
                 // 获取该商家的购物车集合
                 List<OrderItem> orderItems = cart.getOrderItems();
@@ -73,13 +75,13 @@ public class CartServiceImpl implements CartService {
                 OrderItem orderItem = searchOrderItemByItemId(orderItems, itemId);
 
                 // 判断是否买了同样的商品
-                if (orderItem == null){
+                if (orderItem == null) {
                     // 代表没有买过该商家同样的商品
                     // 创建新的购物车中的商品
                     orderItem = createOrderItem(item, num);
                     // 添加到该商家的购物车集合中
                     orderItems.add(orderItem);
-                }else {
+                } else {
                     // 代表买过该商家同样的商品
                     // 设置购买数量(叠加)
                     orderItem.setNum(orderItem.getNum() + num);
@@ -88,12 +90,12 @@ public class CartServiceImpl implements CartService {
                             orderItem.getPrice().doubleValue() * orderItem.getNum()));
 
                     // 判断购买数量是否为零
-                    if (orderItem.getNum() == 0){
+                    if (orderItem.getNum() == 0) {
                         // 从该商家的购物车集合中删除该商品
                         orderItems.remove(orderItem);
                     }
                     // 判断商家的购物车集合是否零
-                    if (orderItems.size() == 0){
+                    if (orderItems.size() == 0) {
                         // 用户的购物车集合中删除该商家的购物车
                         carts.remove(cart);
                     }
@@ -101,22 +103,26 @@ public class CartServiceImpl implements CartService {
             }
 
             return carts;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    /** 根据itemId到商家的购物车集合搜索一个商品 */
+    /**
+     * 根据itemId到商家的购物车集合搜索一个商品
+     */
     private OrderItem searchOrderItemByItemId(List<OrderItem> orderItems, Long itemId) {
         for (OrderItem orderItem : orderItems) {
-            if (orderItem.getItemId().equals(itemId)){
+            if (orderItem.getItemId().equals(itemId)) {
                 return orderItem;
             }
         }
         return null;
     }
 
-    /** 把Item转化成购物车相关的商品 */
+    /**
+     * 把Item转化成购物车相关的商品
+     */
     private OrderItem createOrderItem(Item item, Integer num) {
         OrderItem orderItem = new OrderItem();
         // 设置sku的id
@@ -138,10 +144,12 @@ public class CartServiceImpl implements CartService {
         return orderItem;
     }
 
-    /** 根据商家id从用户的购物车集合中搜索到对应的商家购物车 */
+    /**
+     * 根据商家id从用户的购物车集合中搜索到对应的商家购物车
+     */
     private Cart searchCartBySellerId(List<Cart> carts, String sellerId) {
         for (Cart cart : carts) {
-            if (sellerId.equals(cart.getSellerId())){
+            if (sellerId.equals(cart.getSellerId())) {
                 return cart;
             }
         }
@@ -151,42 +159,45 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 获取登录用户的购物车
+     *
      * @param userId 用户id
      * @return 购物车集合
      */
-    public List<Cart> findCartRedis(String userId){
-        try{
-            List<Cart> carts = (List<Cart>)redisTemplate.boundValueOps("cart_" + userId).get();
-            if (carts == null){
+    public List<Cart> findCartRedis(String userId) {
+        try {
+            List<Cart> carts = (List<Cart>) redisTemplate.boundValueOps("cart_" + userId).get();
+            if (carts == null) {
                 carts = new ArrayList<>();
             }
             return carts;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
     /**
      * 把用户的购物车存储到Redis数据库
+     *
      * @param userId 用户id
-     * @param carts 购物车集合
+     * @param carts  购物车集合
      */
-    public void saveCartRedis(String userId, List<Cart> carts){
-        try{
+    public void saveCartRedis(String userId, List<Cart> carts) {
+        try {
             redisTemplate.boundValueOps("cart_" + userId).set(carts);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
     /**
      * 购物车合并
+     *
      * @param cookieCarts Cookie中购物车
-     * @param redisCarts Redis中购物车
+     * @param redisCarts  Redis中购物车
      * @return 合并后的购物车
-     * */
-    public List<Cart> mergeCart(List<Cart> cookieCarts, List<Cart> redisCarts){
-        try{
+     */
+    public List<Cart> mergeCart(List<Cart> cookieCarts, List<Cart> redisCarts) {
+        try {
             // 循环Cookie中的购物车数据
             for (Cart cookieCart : cookieCarts) {
                 // 迭代商家购物车中的商品
@@ -195,9 +206,28 @@ public class CartServiceImpl implements CartService {
                 }
             }
             return redisCarts;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
+    /**
+     * 保存用户提交的购物车
+     */
+    public void saveCommitCartRedis(String userId, Long[] ids) {
+        try {
+            // 1、从redis中的查询用户的购物车
+            List<Cart> carts = (List<Cart>) redisTemplate.boundValueOps("cart_" + userId).get();
+            // 2、迭代
+            for (Cart cart : carts) {
+                // 迭代商家的购物车
+                for (OrderItem orderItem : cart.getOrderItems()) {
+                    // 根据
+                }
+            }
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
