@@ -40,32 +40,7 @@ app.controller('baseController', function($scope){
             // 第二个参数：删除的个数
             $scope.ids.splice(idx,1);
         }
-        //重新赋值,再次绑定checkbox
-        $scope.checkedArr[i] = $event.target.check;
-        //让全选是否选中,再次绑定checkbox
-        $scope.ckAll = $scope.dataList.length = $scope.ids.length;
     };
-
-    //定义checkbox是否选中数组
-    $scope.checkdeArr =[];
-
-    //为全选绑定点击事件
-    $scope.checkAll =function ($event) {
-        //清空用户选中ids
-        $scope.ids=[];
-        //循环当前页数数据数组
-        for(var i = 0; i <$scope.dataList.length; i++){
-            //初始化数组
-            $scope.checedkArr[i] = $event.target.checked;
-            //判断是否选中
-            if($event.target.checked){
-                //{id}
-                $scope.ids.push($scope.dataList[i].id);
-            }
-        }
-        //重新赋值,再次绑定checkbox */
-        $scope.ckAll = $scope.dataList.length == $scope.ids.length;
-    }
 
     /** 提取数组中json某个属性，返回拼接的字符串(逗号分隔) */
     $scope.jsonArr2Str = function(jsonArrStr, key){

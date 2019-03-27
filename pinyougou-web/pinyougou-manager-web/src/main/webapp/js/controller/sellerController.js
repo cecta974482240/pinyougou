@@ -2,19 +2,10 @@
 app.controller('sellerController', function($scope, $controller, baseService){
 
     /** 指定继承baseController */
-    $controller('indexController',{$scope:$scope});
-
-
+    $controller('baseController',{$scope:$scope});
 
     /** 查询条件对象 */
-    $scope.findId = function (id) {
-        if (id == 1){
-            $scope.searchEntity = "";
-        }else {
-            $scope.searchEntity = {status : '0'};
-        }
-    }
-
+    $scope.searchEntity = {status : '0'};
     /** 分页查询(查询条件) */
     $scope.search = function(page, rows){
         baseService.findByPage("/seller/findByPage", page,
@@ -25,21 +16,7 @@ app.controller('sellerController', function($scope, $controller, baseService){
                 /** 更新分页总记录数 */
                 $scope.paginationConf.totalItems = response.data.total;
             });
-        /**###########全选(下一页清空)#########*/
-        $scope.ids = [];
-        $scope.checkedArr = [];
-        $scope.ckAll = false;
-        /**#################全选##############*/
-
     };
-
-    /** 根据用户Id查询商家信息 */
-    $scope.findById = function (id) {
-        baseService.sendGet("/seller/findById?id=" + id).then(function (response) {
-            /** 获取查询结果 */
-            $scope.seller = response.data;
-        });
-    }
 
     /** 显示修改 */
     $scope.show = function(entity){
