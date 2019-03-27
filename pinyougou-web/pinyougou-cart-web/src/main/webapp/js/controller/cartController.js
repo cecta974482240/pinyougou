@@ -11,7 +11,6 @@ app.controller('cartController', function ($scope, $controller, baseService) {
 
             // 定义json对象封装统计的结果
             $scope.totalEntity = {totalNum: 0, totalMoney: 0};
-
             // 循环用户的购物车数组
             for (var i = 0; i < $scope.carts.length; i++) {
                 // 获取数组中的元素(一个商家的购物车)
@@ -47,7 +46,33 @@ app.controller('cartController', function ($scope, $controller, baseService) {
     };
 
     /*********************************** 页面金额的改变 *****************************************/
-    
+    $scope.getCommitCatr = function () {
+        // 定义json对象封装统计的结果
+        $scope.totalEntity = {totalNum: 0, totalMoney: 0};
+        // 循环用户的购物车数组
+        for (var i = 0; i < $scope.carts.length; i++) {
+            // 获取数组中的元素(一个商家的购物车)
+            var cart = $scope.carts[i];
+
+            var id = $scope.ids[i];
+            // 循环该商家的购物车数组
+            for (var j = 0; j < cart.orderItems.length; j++) {
+                // 获取一个商品
+                var orderItem = cart.orderItems[j];
+
+                // 判断，挑选用户购物车中的 商品
+                if (id[j] != null && (orderItem.itemId == id[j])) {
+                    // 统计购买总数量
+                    $scope.totalEntity.totalNum += orderItem.num;
+                    // 统计购买总金额
+                    $scope.totalEntity.totalMoney += orderItem.totalFee;
+                    alert(id + "********" + id[j]);
+                }
+
+
+            }
+        }
+    };
 
 
     /**************************************** 定义数组结构 *****************************************/
@@ -97,6 +122,9 @@ app.controller('cartController', function ($scope, $controller, baseService) {
         $scope.sellerChckArr[cartIndex] = $scope.ids[cartIndex].length == $scope.carts[cartIndex].orderItems.length;
         // 调用监听，确定全选框状态的方法
         $scope.checkAllUn();
+
+        $scope.getCommitCatr();
+
     };
 
 
@@ -133,6 +161,8 @@ app.controller('cartController', function ($scope, $controller, baseService) {
         // 调用监听，确定全选框状态的方法
         $scope.checkAllUn();
 
+        $scope.getCommitCatr();
+
     };
 
 
@@ -157,6 +187,28 @@ app.controller('cartController', function ($scope, $controller, baseService) {
         }
         // 重新赋值，再次绑定checkbox
         $scope.checkAllUn();
+
+    };
+
+
+    /** 查询提交商家的购物车ids */
+    $scope.findCommitCart = function () {
+        // 判断用户是否登录
+        if ($scope.loginName) { // 登录
+            /** 发送异步请求 */
+            baseService.sendGet("/cart/findCommitCart?ids=" + $scope.ids).then(function (response) {
+                // 判断
+                if (response.data) {
+                    // 成功，跳转到订单页面
+                    location.href = "/order/getOrderInfo.html";
+                } else {
+                    // 提交失败
+                    alert("购物车结算失败！");
+                }
+            });
+        } else { // 未登录
+            location.href = "http://sso.pinyougou.com/login?service="+ $scope.redirectUrl;
+        }
     };
 
 });

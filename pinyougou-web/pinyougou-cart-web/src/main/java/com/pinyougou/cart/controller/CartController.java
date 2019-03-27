@@ -122,4 +122,17 @@ public class CartController {
         return carts;
 
     }
+
+    /** 获取用户提交的购物车 */
+    @GetMapping("/findCommitCart")
+    public List<Cart> findCommitCart(Long[] ids){
+        // 获取登录用户名
+        String userId = request.getRemoteUser();
+
+        // 购物集合
+        List<Cart> carts = null;
+
+        return carts;
+
+    }
 }
