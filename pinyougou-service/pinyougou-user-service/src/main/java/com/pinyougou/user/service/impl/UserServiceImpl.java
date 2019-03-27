@@ -141,4 +141,40 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUserId(userName);
     }
 
+
+
+    /** 昵称,密码设置 */
+    public void savePasswordOrNickname(User user,String username){
+        try {
+
+            // 加密密码
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+            // 设置修改密码时间
+            user.setUpdated(new Date());
+
+            userMapper.savePasswordOrNickname(user.getPassword(),user.getUpdated(),user.getNickName(),username);
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    /** 查询当前登录的用户信息 */
+    public User findUser(String userId){
+        try{
+            return userMapper.findUser(userId);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    /** 修改绑定后的手机号码 */
+    @Override
+    public void updatePhone(String phone,String userId) {
+        try {
+            userMapper.updatePhone(phone,userId);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }
