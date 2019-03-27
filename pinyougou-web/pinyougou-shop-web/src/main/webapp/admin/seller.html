@@ -9,130 +9,136 @@
     <link rel="stylesheet" href="/plugins/adminLTE/css/AdminLTE.css"/>
     <link rel="stylesheet" href="/plugins/adminLTE/css/skins/_all-skins.min.css"/>
     <link rel="stylesheet" href="/css/style.css"/>
-	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
-   
+    <script src="/plugins/angularjs/angular.min.js"></script>
+    <script src="/js/base.js"></script>
+    <script src="/js/service/baseService.js"></script>
+    <script src="/js/controller/indexController.js"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini"
+      ng-app="pinyougou"
+      ng-controller="indexController"
+      ng-init="showLoginName();">
 
-	<!-- 正文区域 -->
-	<section class="content">
-		<div class="box-body">
-			<!--tab页-->
-			<div class="nav-tabs-custom">
-				<!--tab头-->
-				<ul class="nav nav-tabs">
-					
-					<li class="active">
-						<a href="#home" data-toggle="tab">商家信息</a>                             
-					</li>                            
-				</ul>
-				<!--tab头/-->
-				
-				<!--tab内容-->
-				<div class="tab-content">
+<!-- 正文区域 -->
+<section class="content">
+    <div class="box-body">
+        <!--tab页-->
+        <div class="nav-tabs-custom">
+            <!--tab头-->
+            <ul class="nav nav-tabs">
 
-					<!--表单内容-->
-					<div class="tab-pane active" id="home">
-						<div class="row data-type">                                  
+                <li class="active">
+                    <a href="#home" data-toggle="tab">商家信息</a>
+                </li>
+            </ul>
+            <!--tab头/-->
 
-							<div class="col-md-2 title">公司名称</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="公司名称" value="">
-							</div>
-							
-							<div class="col-md-2 title">公司手机</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"  placeholder="公司手机" value="">
-							</div>
-							
-							<div class="col-md-2 title">公司电话</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"    placeholder="公司电话" value="">
-							</div>
-							
-							<div class="col-md-2 title">公司详细地址</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"    placeholder="公司详细地址" value="">
-							</div>
-							
-							<div class="col-md-2 title">联系人姓名</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="联系人姓名" value="">
-							</div>
-							
-							<div class="col-md-2 title">联系人QQ</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="联系人QQ" value="">
-							</div>
-							
-							<div class="col-md-2 title">联系人手机</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"    placeholder="联系人手机" value="">
-							</div>
-							
-							<div class="col-md-2 title">联系人EMAIL</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="联系人EMAIL" value="">
-							</div>
-							
-							<div class="col-md-2 title">营业执照号</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="营业执照号" value="">
-							</div>
-							 
-							<div class="col-md-2 title">税务登记证号</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="税务登记证号" value="">
-							</div>
-							
-							<div class="col-md-2 title">组织机构代码证</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"  placeholder="组织机构代码证" value="">
-							</div>
-							
-							<div class="col-md-2 title">法定代表人</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="法定代表人" value="">
-							</div>
-							
-							<div class="col-md-2 title">法定代表人身份证号</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="法定代表人身份证号" value="">
-							</div>
+            <!--tab内容-->
+            <div class="tab-content">
 
-							<div class="col-md-2 title">开户行名称</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control" placeholder="开户行名称" value="">
-							</div>
-							
-							<div class="col-md-2 title">开户行支行</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="开户行支行" value="">
-							</div>
+                <!--表单内容-->
+                <div class="tab-pane active" id="home">
+                    <div class="row data-type">
+                        <div class="col-md-2 title">公司名称</div>
+                        <div class="col-md-10 data" >
+                            <input type="text" class="form-control" placeholder="公司名称" value="{{sellerInfo.name}}" ng-model="sellerInfo.name" ng-disabled="isDisabled">
+                        </div>
 
-							<div class="col-md-2 title">银行账号</div>
-							<div class="col-md-10 data">
-								<input type="text" class="form-control"   placeholder="银行账号" value="">
-							</div>
-							
-						</div>
-					</div>
-					
-				</div>
-				<!--tab内容/-->
-				<!--表单内容/-->
-			</div>
-			
-		   </div>
-		  <div class="btn-toolbar list-toolbar">
-			  <button class="btn btn-primary" ><i class="fa fa-save"></i>保存</button>
-			  <a  data-toggle="modal" class="btn btn-danger">提交</a>
-		  </div>
-	
-	</section>
-	<!-- 正文区域 /-->
+                        <div class="col-md-2 title">公司手机</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="公司手机" value="{{sellerInfo.mobile}}" ng-model="sellerInfo.mobile" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">公司电话</div>
+                        <div class="col-md-10 data" >
+                            <input type="text" class="form-control" placeholder="公司电话" value="{{sellerInfo.telephone}}" ng-model="sellerInfo.telephone" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">公司详细地址</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="公司详细地址" value="{{sellerInfo.addressDetail}}" ng-model="sellerInfo.addressDetail" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">联系人姓名</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="联系人姓名" value="{{sellerInfo.linkmanName}}" ng-model="sellerInfo.linkmanName" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">联系人QQ</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="联系人QQ" value="{{sellerInfo.linkmanQq}}" ng-model="sellerInfo.linkmanQq" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">联系人手机</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="联系人手机" value="{{sellerInfo.linkman_mobile}}" ng-model="sellerInfo.linkman_mobile" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">联系人EMAIL</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="联系人EMAIL" value="{{sellerInfo.linkmanEmail}}" ng-model="sellerInfo.linkmanEmail" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">营业执照号</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="营业执照号" value="{{sellerInfo.licenseNumber}}" ng-model="sellerInfo.licenseNumber" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">税务登记证号</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="税务登记证号" value="{{sellerInfo.taxNumber}}" ng-model="sellerInfo.taxNumber" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">组织机构代码证</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="组织机构代码证" value="{{sellerInfo.orgNumber}}" ng-model="ellerInfo.orgNumber" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">法定代表人</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="法定代表人" value="{{sellerInfo.legalPerson}}" ng-model="sellerInfo.legalPerson" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">法定代表人身份证号</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="法定代表人身份证号" value="{{sellerInfo.legalPersonCardId}}" ng-model="sellerInfo.legalPersonCardId" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">开户行名称</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="开户行名称" value="{{sellerInfo.bankUser}}" ng-model="sellerInfo.bankUser" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">开户行支行</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="开户行支行" value="{{sellerInfo.bankName}}" ng-model="sellerInfo.bankName" ng-disabled="isDisabled">
+                        </div>
+
+                        <div class="col-md-2 title">银行账号</div>
+                        <div class="col-md-10 data">
+                            <input type="text" class="form-control" placeholder="银行账号" value="">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!--tab内容/-->
+            <!--表单内容/-->
+        </div>
+
+    </div>
+    <div class="btn-toolbar list-toolbar">
+        <button class="btn btn-primary" ng-click="isDisable()"><i class="fa fa-save" ></i>{{isDisabled?'修改':'取消'}}</button>
+        <a data-toggle="modal" class="btn btn-danger" ng-click="submitInfo()">提交</a>
+    </div>
+
+</section>
+<!-- 正文区域 /-->
 </body>
 
 </html>

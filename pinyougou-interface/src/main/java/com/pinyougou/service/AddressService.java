@@ -46,4 +46,9 @@ public interface AddressService {
 
     /** 查询城区信息 */
     List<Areas> findAreaById(Long ciytId);
+	/** 根据用户名查询收件地址 */
+
+	List<Address> showAddress(String loginName);
+	/** 根据用户名修改地址默认状态码 */
+	void selectDefault(Serializable id);
 }

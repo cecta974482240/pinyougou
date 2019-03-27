@@ -1,8 +1,10 @@
 package com.pinyougou.service;
 
 import com.pinyougou.pojo.Cities;
-import java.util.List;
+
 import java.io.Serializable;
+import java.util.List;
+
 /**
  * CitiesService 服务接口
  * @date 2019-02-27 10:03:32
@@ -30,5 +32,7 @@ public interface CitiesService {
 
 	/** 多条件分页查询 */
 	List<Cities> findByPage(Cities cities, int page, int rows);
+
+    List<Cities> findCitiesByParentId(Long parentId);
 
 }
