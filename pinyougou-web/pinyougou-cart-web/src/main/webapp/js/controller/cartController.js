@@ -46,8 +46,36 @@ app.controller('cartController', function ($scope, $controller, baseService) {
         });
     };
 
-    /*********************************** 用户提交的购物车 *****************************************/
-    /*
+    /*********************************** 页面金额的改变 *****************************************/
+    /** 定义用户提交的购物车集合结构 */
+    $scope.commitCarts = [];
+    /** 根据ids 生成用户提交的购物车集合 */
+    $scope.getCommitCart = function () {
+
+        // 清空用户提交的购物车
+        $scope.$scope.commitCarts = [];
+
+        // 循环用户的购物车数组
+        for (var i = 0; i < $scope.carts.length; i++) {
+            // 获取数组中的元素(一个商家的购物车)
+            var cart = $scope.carts[i];
+            // 循环该商家的购物车数组
+            for (var j = 0; j < cart.orderItems.length; j++) {
+                // 获取一个商品
+                var orderItem = cart.orderItems[j];
+
+                /** 根据ids 封装用户提交的购物车 */
+
+                // 统计购买总数量
+                $scope.totalEntity.totalNum += orderItem.num;
+                // 统计购买总金额
+                $scope.totalEntity.totalMoney += orderItem.totalFee;
+
+
+
+            }
+        }
+    };
 
 
     /**************************************** 定义数组结构 *****************************************/
@@ -97,6 +125,9 @@ app.controller('cartController', function ($scope, $controller, baseService) {
         $scope.sellerChckArr[cartIndex] = $scope.ids[cartIndex].length == $scope.carts[cartIndex].orderItems.length;
         // 调用监听，确定全选框状态的方法
         $scope.checkAllUn();
+
+        // 用户提交的购物车
+        $scope.getCommitCart();
     };
 
 
