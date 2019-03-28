@@ -275,7 +275,8 @@ public class OrderServiceImpl implements OrderService {
                 Example.Criteria criteria1 = example1.createCriteria();
                 criteria1.andEqualTo("orderId",orderid );
                 List<Order> order1 = orderMapper.selectByExample(example1);
-                payLog1.setTotalFee(order1.get(0).getPayment().longValue());
+                long totalFee = (long) (order1.get(0).getPayment().doubleValue() * 100);
+                payLog1.setTotalFee(totalFee);
                 payLog1.setTransactionId(transactionId);
                 payLog1.setPayType("1");
                 payLog1.setOrderList(orderId);
@@ -288,6 +289,7 @@ public class OrderServiceImpl implements OrderService {
                 }
                 String ids = list.toString().replace("[", "").replaceAll("]", "");
                 payLog.setOrderList(ids);
+                payLog.setTotalFee(payLog.getTotalFee()-payLog1.getTotalFee());
                 payLogMapper.updateByPrimaryKeySelective(payLog);
                 // 3. 删除支付日志
                 redisTemplate.delete("payLog_" + payLog.getUserId());

@@ -1,6 +1,9 @@
 /** 定义控制器层 */
 app.controller('indexController1', function($scope, $interval,$location,baseService){
 
+    // /** 指定继承baseController */
+    // $controller('baseController', {$scope: $scope});
+
     // 定义获取登录用户名的方法
     $scope.loadUsername = function () {
 
@@ -17,7 +20,7 @@ app.controller('indexController1', function($scope, $interval,$location,baseServ
 
     // 定义json对象封装搜索条件
     $scope.page = 1;
-    $scope.rows = 4;
+    $scope.rows = 8;
 
     $scope.findOrder = function () {
         baseService.sendGet("/user/findByPage?page="+$scope.page+"&rows="+$scope.rows).then(function (response) {
