@@ -66,7 +66,6 @@ app.controller('cartController', function ($scope, $controller, baseService) {
                     $scope.totalEntity.totalNum += orderItem.num;
                     // 统计购买总金额
                     $scope.totalEntity.totalMoney += orderItem.totalFee;
-                    alert(id + "********" + id[j]);
                 }
 
 
@@ -168,19 +167,17 @@ app.controller('cartController', function ($scope, $controller, baseService) {
 
     /** 列表全选 */
     $scope.checkAll = function ($event) {
-        // // 清空用户选择的ids
-        //$scope.ids = [];
         // 循环当前页数据数组
         for (var i = 0; i < $scope.carts.length; i++) {
             // 初始化数组
             $scope.sellerChckArr[i] = $event.target.checked;
             // 判断是否选中
             if ($event.target.checked) {
-                for (var j = 0; j < $scope.carts.length; i++) {
+                for (var j = 0; j < $scope.carts.length; j++) {
                     $scope.sellerCheckAll($event, i);
                 }
             } else {
-                for (var j = 0; j < $scope.carts.length; i++) {
+                for (var j = 0; j < $scope.carts.length; j++) {
                     $scope.sellerCheckAll($event, i);
                 }
             }
@@ -191,12 +188,18 @@ app.controller('cartController', function ($scope, $controller, baseService) {
     };
 
 
-    /** 查询提交商家的购物车ids */
-    $scope.findCommitCart = function () {
+
+
+    /** 保存提交商家的购物车ids */
+    $scope.saveCommitCart = function () {
+        // 调用处理ids的方法
+        $scope.checkIds();
+        alert($scope.commitIds);
         // 判断用户是否登录
         if ($scope.loginName) { // 登录
             /** 发送异步请求 */
-            baseService.sendGet("/cart/findCommitCart?ids=" + $scope.ids).then(function (response) {
+            baseService.sendGet("/cart/saveCommitCart?ids="+ $scope.commitIds)
+                .then(function (response) {
                 // 判断
                 if (response.data) {
                     // 成功，跳转到订单页面
@@ -208,6 +211,26 @@ app.controller('cartController', function ($scope, $controller, baseService) {
             });
         } else { // 未登录
             location.href = "http://sso.pinyougou.com/login?service="+ $scope.redirectUrl;
+        }
+    };
+
+    /** 定义传递的id 集合 */
+    $scope.commitIds = [];
+    /** 处理用户提交购物车的ids: 去掉空的 [] */
+    $scope.checkIds = function () {
+        // 迭代
+        for (var i = 0; i < $scope.ids.length; i++) {
+            // 判断长度为 0
+            if ($scope.ids[i].length == 0) {
+                $scope.ids.splice(i, 1);
+            }
+        }
+
+        // 挑选ids
+        for (var i = 0; i < $scope.ids.length; i++) {
+            for (var j = 0; j < $scope.ids[i].length; j++) {
+                $scope.commitIds.push($scope.ids[i][j]);
+            }
         }
     };
 
