@@ -41,4 +41,7 @@ public interface CartService {
      * @return 合并后的购物车
      * */
     List<Cart> mergeCart(List<Cart> cookieCarts, List<Cart> redisCarts);
+
+    /** 保存用户提交的购物车 */
+    void saveCommitCartRedis(String userId, Long[] ids);
 }
